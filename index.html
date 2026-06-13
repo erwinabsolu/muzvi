@@ -525,7 +525,7 @@
   <div class="wrap">
     <div class="clipbar reveal">
       <p>Tu es clippeur ?<span>Des clients qui paient, zéro commission sur ton travail.</span></p>
-      <a href="#" class="btn btn-w">Découvrir l'espace clippeur</a>
+      <a href="#" class="btn btn-w" onclick="return goClippeur(event)">Découvrir l'espace clippeur</a>
     </div>
   </div>
 </section>
@@ -598,7 +598,7 @@
     <div class="foot-logo">Muz<span>vi</span></div>
     <div class="foot-links">
       <a href="#how">Comment ça marche</a>
-      <a href="#">Devenir clippeur</a>
+      <a href="#" onclick="return goClippeur(event)">Devenir clippeur</a>
       <a href="#">Contact</a>
       <a href="#">Mentions légales</a>
       <a href="#">CGU</a>
@@ -624,27 +624,34 @@
   const LOVABLE_SIGNUP_URL = "";
   // ==========================
 
-  // ---- envoi vers l'inscription (en gardant style + budget) ----
-  function goInscription(e, styleId, budgetId){
-    if(e) e.preventDefault();
-    styleId  = styleId  || 'style';
-    budgetId = budgetId || 'budget';
-    const styleEl  = document.getElementById(styleId);
-    const budgetEl = document.getElementById(budgetId);
-    const style  = styleEl  ? styleEl.value  : '';
-    const budget = budgetEl ? budgetEl.value : '';
-
+  // ---- envoi vers l'inscription selon le rôle ----
+  function goSignup(role, styleId, budgetId){
+    let qs = 'role=' + role;
+    if(role === 'artiste'){
+      const styleEl  = styleId  ? document.getElementById(styleId)  : null;
+      const budgetEl = budgetId ? document.getElementById(budgetId) : null;
+      const style  = styleEl  ? styleEl.value  : '';
+      const budget = budgetEl ? budgetEl.value : '';
+      qs += '&style=' + encodeURIComponent(style) + '&budget=' + encodeURIComponent(budget);
+    }
     if(LOVABLE_SIGNUP_URL){
       const sep = LOVABLE_SIGNUP_URL.includes('?') ? '&' : '?';
-      window.location.href = LOVABLE_SIGNUP_URL + sep
-        + 'role=artiste'
-        + '&style='  + encodeURIComponent(style)
-        + '&budget=' + encodeURIComponent(budget);
+      window.location.href = LOVABLE_SIGNUP_URL + sep + qs;
     } else {
       // Fallback démo tant que l'app Lovable n'est pas branchée :
       document.getElementById('clippeurs').scrollIntoView({behavior:'smooth'});
     }
     return false;
+  }
+  // Artiste : envoie role=artiste + style + budget (depuis l'encart concerné)
+  function goInscription(e, styleId, budgetId){
+    if(e) e.preventDefault();
+    return goSignup('artiste', styleId || 'style', budgetId || 'budget');
+  }
+  // Clippeur : envoie role=clippeur (pas de style/budget)
+  function goClippeur(e){
+    if(e) e.preventDefault();
+    return goSignup('clippeur');
   }
 
   // ---- reveal on scroll ----
