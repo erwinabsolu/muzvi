@@ -369,7 +369,7 @@
     <div class="nav-links">
       <a href="#clippeurs" class="nav-link nav-link-clip">Clippeurs</a>
       <a href="#how" class="nav-link nav-link-clip">Comment ça marche</a>
-      <a href="#activ" class="nav-cta">Trouver un clippeur</a>
+      <a href="#" class="nav-cta" onclick="return goInscription(event)">Trouver un clippeur</a>
     </div>
   </div>
 </nav>
@@ -395,15 +395,7 @@
           <option value="electro">Électro</option>
         </select>
       </div>
-      <div class="field">
-        <div class="budget-head">
-          <label class="activ-label" for="budget" style="margin:0">Ton budget clip</label>
-          <span class="budget-val"><span id="budgetVal">1 000</span>€</span>
-        </div>
-        <input type="range" id="budget" min="300" max="10000" step="100" value="1000" oninput="document.getElementById('budgetVal').textContent=Number(this.value).toLocaleString('fr-FR')">
-        <div class="budget-scale"><span>300€</span><span>10 000€</span></div>
-      </div>
-      <button type="submit" class="btn btn-full">Voir les clippeurs qui matchent →</button>
+      <button type="submit" class="btn btn-full">Trouver mon clippeur →</button>
     </form>
 
     <p style="font-size:13px;color:var(--gray-2);margin-top:18px;font-weight:500">
@@ -451,7 +443,7 @@
     <p class="empty-note reveal">Les premiers clippeurs arrivent. Inscris-toi pour être parmi les premiers à les contacter — et à profiter du clip financé le 30 août.</p>
 
     <div class="grid-foot reveal">
-      <a href="#activ" class="btn">Rejoindre Muzvi</a>
+      <a href="#" class="btn" onclick="return goInscription(event)">Rejoindre Muzvi</a>
     </div>
   </div>
 </section>
@@ -563,7 +555,7 @@
   <div class="wrap">
     <div class="sec-head reveal" style="margin-bottom:24px">
       <h2>Ton prochain clip commence ici.</h2>
-      <p class="sec-sub">Dis-nous ton style et ton budget, on te montre les clippeurs qui matchent. Gratuit.</p>
+      <p class="sec-sub">Dis-nous ton style, on t'emmène vers ton clippeur. Gratuit.</p>
     </div>
     <div class="activ reveal" style="max-width:520px">
       <div class="field">
@@ -579,15 +571,7 @@
           <option value="electro">Électro</option>
         </select>
       </div>
-      <div class="field">
-        <div class="budget-head">
-          <label class="activ-label" for="budget2" style="margin:0">Ton budget clip</label>
-          <span class="budget-val"><span id="budgetVal2">1 000</span>€</span>
-        </div>
-        <input type="range" id="budget2" min="300" max="10000" step="100" value="1000" oninput="document.getElementById('budgetVal2').textContent=Number(this.value).toLocaleString('fr-FR')">
-        <div class="budget-scale"><span>300€</span><span>10 000€</span></div>
-      </div>
-      <button class="btn btn-full" onclick="goInscription(null,'style2','budget2')">Trouver mon clippeur →</button>
+      <button class="btn btn-full" onclick="goInscription(event,'style2')">Trouver mon clippeur →</button>
     </div>
   </div>
 </section>
@@ -614,41 +598,39 @@
     <span class="l1">500€ pour ton clip, le 30 août</span>
     <span class="l2">Co-financé par Muzvi · inscription gratuite</span>
   </div>
-  <a href="#activ" class="sticky-btn" onclick="goInscription(event)">Rejoindre →</a>
+  <a href="#" class="sticky-btn" onclick="return goInscription(event)">Rejoindre →</a>
 </div>
 
 <script>
   // ====== À CONFIGURER ======
-  // Quand l'app Lovable existe, colle ici son URL d'inscription, par ex :
-  // "https://muzvi.lovable.app/inscription"
-  const LOVABLE_SIGNUP_URL = "";
+  // URL d'inscription de l'app Lovable :
+  const LOVABLE_SIGNUP_URL = "https://muzvi.lovable.app/inscription";
   // ==========================
 
   // ---- envoi vers l'inscription selon le rôle ----
-  function goSignup(role, styleId, budgetId){
+  // On transmet le rôle, et le style pour l'artiste (le style fonctionne ;
+  // le budget se renseigne dans l'app, à la complétion de profil).
+  function goSignup(role, styleId){
     let qs = 'role=' + role;
-    if(role === 'artiste'){
-      const styleEl  = styleId  ? document.getElementById(styleId)  : null;
-      const budgetEl = budgetId ? document.getElementById(budgetId) : null;
-      const style  = styleEl  ? styleEl.value  : '';
-      const budget = budgetEl ? budgetEl.value : '';
-      qs += '&style=' + encodeURIComponent(style) + '&budget=' + encodeURIComponent(budget);
+    if(role === 'artiste' && styleId){
+      const el = document.getElementById(styleId);
+      const style = el ? el.value : '';
+      if(style) qs += '&style=' + encodeURIComponent(style);
     }
     if(LOVABLE_SIGNUP_URL){
       const sep = LOVABLE_SIGNUP_URL.includes('?') ? '&' : '?';
       window.location.href = LOVABLE_SIGNUP_URL + sep + qs;
     } else {
-      // Fallback démo tant que l'app Lovable n'est pas branchée :
       document.getElementById('clippeurs').scrollIntoView({behavior:'smooth'});
     }
     return false;
   }
-  // Artiste : envoie role=artiste + style + budget (depuis l'encart concerné)
-  function goInscription(e, styleId, budgetId){
+  // Artiste (styleId = le sélecteur de l'encart concerné)
+  function goInscription(e, styleId){
     if(e) e.preventDefault();
-    return goSignup('artiste', styleId || 'style', budgetId || 'budget');
+    return goSignup('artiste', styleId || 'style');
   }
-  // Clippeur : envoie role=clippeur (pas de style/budget)
+  // Clippeur
   function goClippeur(e){
     if(e) e.preventDefault();
     return goSignup('clippeur');
