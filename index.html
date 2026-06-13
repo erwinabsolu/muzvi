@@ -114,6 +114,28 @@
   .activ-row{display:flex;gap:12px}
   .activ-row .field{flex:1}
 
+  /* ---------- budget molette ---------- */
+  .budget-head{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 8px 2px}
+  .budget-val{font-size:20px;font-weight:800;letter-spacing:-.02em;color:var(--ink)}
+  .budget-val small{font-size:12px;font-weight:500;color:var(--gray);margin-left:3px}
+  input[type=range]{
+    -webkit-appearance:none;appearance:none;width:100%;height:6px;border-radius:999px;
+    background:var(--border);outline:none;margin:6px 0 2px;cursor:pointer;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none;appearance:none;width:24px;height:24px;border-radius:50%;
+    background:linear-gradient(180deg,#2A2A2E,#0A0A0A);cursor:pointer;
+    box-shadow:0 2px 6px rgba(10,10,10,.3),inset 0 1px 0 rgba(255,255,255,.15);
+    border:2px solid #fff;
+  }
+  input[type=range]::-moz-range-thumb{
+    width:22px;height:22px;border-radius:50%;border:2px solid #fff;
+    background:linear-gradient(180deg,#2A2A2E,#0A0A0A);cursor:pointer;
+    box-shadow:0 2px 6px rgba(10,10,10,.3);
+  }
+  input[type=range]:focus-visible::-webkit-slider-thumb{box-shadow:0 0 0 4px rgba(10,10,10,.15)}
+  .budget-scale{display:flex;justify-content:space-between;font-size:11px;color:var(--gray-2);font-weight:500;margin-top:2px}
+
   /* ---------- section base ---------- */
   section{padding:56px 0}
   .sec-head{text-align:center;max-width:620px;margin:0 auto 36px}
@@ -297,34 +319,27 @@
     <h1>Un clip pro,<br>sans le payer seul.</h1>
     <p class="sub">Trouve le clippeur parfait pour ton projet. Paiement sécurisé. Et Muzvi cofinance une part de tes clips à mesure que tu crées.</p>
 
-    <form class="activ" id="activ" onsubmit="return matchClippeurs(event)">
-      <div class="activ-row">
-        <div class="field">
-          <label class="activ-label" for="style">Ton style</label>
-          <select id="style">
-            <option value="all">Tous les styles</option>
-            <option value="rap">Rap</option>
-            <option value="drill">Drill</option>
-            <option value="pop">Pop</option>
-            <option value="afro">Afro</option>
-            <option value="rnb">R&B</option>
-            <option value="electro">Électro</option>
-          </select>
-        </div>
-        <div class="field">
-          <label class="activ-label" for="budget">Ton budget</label>
-          <select id="budget">
-            <option value="all">Indifférent</option>
-            <option>À partir de 600€</option>
-            <option>600 – 1 000€</option>
-            <option>1 000 – 2 000€</option>
-            <option>2 000€ +</option>
-          </select>
-        </div>
+    <form class="activ" id="activ" onsubmit="return goInscription(event)">
+      <div class="field">
+        <label class="activ-label" for="style">Ton style</label>
+        <select id="style">
+          <option value="">Choisis ton style</option>
+          <option value="rap">Rap</option>
+          <option value="drill">Drill</option>
+          <option value="pop">Pop</option>
+          <option value="afro">Afro</option>
+          <option value="rnb">R&B</option>
+          <option value="newwave">New Wave</option>
+          <option value="electro">Électro</option>
+        </select>
       </div>
       <div class="field">
-        <label class="activ-label" for="ville">Ta ville</label>
-        <input class="txt" id="ville" type="text" placeholder="Paris, Lyon… ou partout">
+        <div class="budget-head">
+          <label class="activ-label" for="budget" style="margin:0">Ton budget clip</label>
+          <span class="budget-val"><span id="budgetVal">1 000</span>€</span>
+        </div>
+        <input type="range" id="budget" min="600" max="10000" step="100" value="1000" oninput="document.getElementById('budgetVal').textContent=Number(this.value).toLocaleString('fr-FR')">
+        <div class="budget-scale"><span>600€</span><span>10 000€</span></div>
       </div>
       <button type="submit" class="btn btn-full">Voir les clippeurs qui matchent →</button>
     </form>
@@ -350,6 +365,7 @@
       <button class="pill" data-f="pop">Pop</button>
       <button class="pill" data-f="afro">Afro</button>
       <button class="pill" data-f="rnb">R&B</button>
+      <button class="pill" data-f="newwave">New Wave</button>
       <button class="pill" data-f="electro">Électro</button>
     </div>
 
@@ -405,6 +421,15 @@
         <div class="ccard-body">
           <div class="ccard-top"><span class="ccard-name">Mira &amp; Co</span><span class="ccard-price">dès <b>750€</b></span></div>
           <p class="ccard-meta">Paris · 27 clips livrés</p>
+          <div class="ccard-badges"><span class="badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Vérifié</span><span class="badge"><svg width="12" height="13" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Paiement protégé</span></div>
+        </div>
+      </article>
+
+      <article class="ccard" data-style="newwave electro">
+        <div class="reel v4"><span class="reel-tag">New Wave · Électro</span><div class="play"><svg width="16" height="16" viewBox="0 0 24 24" fill="#fff"><path d="M8 5v14l11-7z"/></svg></div></div>
+        <div class="ccard-body">
+          <div class="ccard-top"><span class="ccard-name">NÉON Studio</span><span class="ccard-price">dès <b>950€</b></span></div>
+          <p class="ccard-meta">Lille · 16 clips livrés</p>
           <div class="ccard-badges"><span class="badge"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg> Vérifié</span><span class="badge"><svg width="12" height="13" viewBox="0 0 24 24" fill="none" stroke="#0A0A0A" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> Paiement protégé</span></div>
         </div>
       </article>
@@ -527,22 +552,28 @@
       <p class="sec-sub">Dis-nous ton style et ton budget, on te montre les clippeurs qui matchent. Gratuit.</p>
     </div>
     <div class="activ reveal" style="max-width:520px">
-      <div class="activ-row">
-        <div class="field">
-          <label class="activ-label" for="style2">Ton style</label>
-          <select id="style2">
-            <option value="all">Tous les styles</option>
-            <option value="rap">Rap</option><option value="drill">Drill</option>
-            <option value="pop">Pop</option><option value="afro">Afro</option>
-            <option value="rnb">R&B</option><option value="electro">Électro</option>
-          </select>
-        </div>
-        <div class="field">
-          <label class="activ-label" for="budget2">Ton budget</label>
-          <select id="budget2"><option value="all">Indifférent</option><option>À partir de 600€</option><option>600 – 1 000€</option><option>1 000 – 2 000€</option><option>2 000€ +</option></select>
-        </div>
+      <div class="field">
+        <label class="activ-label" for="style2">Ton style</label>
+        <select id="style2">
+          <option value="">Choisis ton style</option>
+          <option value="rap">Rap</option>
+          <option value="drill">Drill</option>
+          <option value="pop">Pop</option>
+          <option value="afro">Afro</option>
+          <option value="rnb">R&B</option>
+          <option value="newwave">New Wave</option>
+          <option value="electro">Électro</option>
+        </select>
       </div>
-      <button class="btn btn-full" onclick="document.getElementById('style').value=document.getElementById('style2').value;applyFilter(document.getElementById('style2').value);document.getElementById('clippeurs').scrollIntoView({behavior:'smooth'})">Voir les clippeurs qui matchent →</button>
+      <div class="field">
+        <div class="budget-head">
+          <label class="activ-label" for="budget2" style="margin:0">Ton budget clip</label>
+          <span class="budget-val"><span id="budgetVal2">1 000</span>€</span>
+        </div>
+        <input type="range" id="budget2" min="600" max="10000" step="100" value="1000" oninput="document.getElementById('budgetVal2').textContent=Number(this.value).toLocaleString('fr-FR')">
+        <div class="budget-scale"><span>600€</span><span>10 000€</span></div>
+      </div>
+      <button class="btn btn-full" onclick="goInscription(null,'style2','budget2')">Trouver mon clippeur →</button>
     </div>
   </div>
 </section>
@@ -569,22 +600,46 @@
 </div>
 
 <script>
-  // ---- filtre clippeurs ----
+  // ====== À CONFIGURER ======
+  // Quand l'app Lovable existe, colle ici son URL d'inscription, par ex :
+  // "https://muzvi.lovable.app/inscription"
+  const LOVABLE_SIGNUP_URL = "";
+  // ==========================
+
+  // ---- envoi vers l'inscription (en gardant style + budget) ----
+  function goInscription(e, styleId, budgetId){
+    if(e) e.preventDefault();
+    styleId  = styleId  || 'style';
+    budgetId = budgetId || 'budget';
+    const styleEl  = document.getElementById(styleId);
+    const budgetEl = document.getElementById(budgetId);
+    const style  = styleEl  ? styleEl.value  : '';
+    const budget = budgetEl ? budgetEl.value : '';
+
+    if(LOVABLE_SIGNUP_URL){
+      const sep = LOVABLE_SIGNUP_URL.includes('?') ? '&' : '?';
+      window.location.href = LOVABLE_SIGNUP_URL + sep
+        + 'role=artiste'
+        + '&style='  + encodeURIComponent(style)
+        + '&budget=' + encodeURIComponent(budget);
+    } else {
+      // Fallback démo tant que l'app Lovable n'est pas branchée :
+      if(style) applyFilter(style);
+      document.getElementById('clippeurs').scrollIntoView({behavior:'smooth'});
+    }
+    return false;
+  }
+
+  // ---- filtre clippeurs (vitrine) ----
   function applyFilter(f){
     document.querySelectorAll('#pills .pill').forEach(p=>p.classList.toggle('on', p.dataset.f===f));
     let shown=0;
     document.querySelectorAll('#grid .ccard').forEach(c=>{
-      const ok = f==='all' || c.dataset.style.includes(f);
+      const ok = f==='all' || (c.dataset.style||'').includes(f);
       c.style.display = ok ? '' : 'none';
       if(ok) shown++;
     });
     document.getElementById('noresult').style.display = shown===0 ? 'block' : 'none';
-  }
-  function matchClippeurs(e){
-    e.preventDefault();
-    applyFilter(document.getElementById('style').value);
-    document.getElementById('clippeurs').scrollIntoView({behavior:'smooth'});
-    return false;
   }
   document.querySelectorAll('#pills .pill').forEach(p=>{
     p.addEventListener('click',()=>applyFilter(p.dataset.f));
