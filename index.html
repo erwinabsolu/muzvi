@@ -652,5 +652,14 @@ function mzLang(){document.body.classList.toggle('en');try{if(window.posthog)pos
 .scicit{margin-top:11px;font-size:.72rem;line-height:1.4;color:rgba(66,11,46,.6);font-weight:600}
 @media(max-width:700px){.sbrow{grid-template-columns:1fr;gap:34px}.sbl{max-width:280px}}
 </style>
+  <script>
+(function(){
+  var p = new URLSearchParams(location.search);
+  if (p.get('paid')==='1' && !sessionStorage.getItem('mz_paid')){
+    if (window.posthog) posthog.capture('preorder_paid');
+    sessionStorage.setItem('mz_paid','1');
+  }
+})();
+</script>
 </body>
 </html>
