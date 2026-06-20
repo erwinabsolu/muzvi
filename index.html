@@ -252,7 +252,7 @@
     <div class="rate"><span class="st">★★★★★</span> POUR LES SPORTIVES QUE LEUR CYCLE FREINE</div>
     <h1>Ton cycle ne dicte plus <em>ton rythme</em>.</h1>
     <p class="sub">Énergie à plat, humeur en vrac, séances sautées — chaque mois, au même moment. MUZVI (B6, magnésium, gattilier) t'aide à garder ton énergie et ta tête, pour ne rien lâcher.</p>
-    <button class="btn lg" onclick="mzPreorder('hero')">Économise 17 % + Livraison offerte</button>
+    <button class="btn lg" onclick="mzPreorder('hero')">Pré-commander · Livraison offerte</button>
     <div class="cta-sub"><span>🛡️ Satisfait ou remboursé 30 j</span><span>↻ Sans engagement</span></div>
     <div class="stats3">
       <div class="s3"><div class="circ">3</div><div class="lab">Actifs ciblés<small>B6 · Mg · gattilier</small></div></div>
@@ -308,7 +308,7 @@
 <!-- PDP -->
 <section class="pdp" id="produit"><div class="wrap">
   <div class="pdpvis rv">
-    <div class="promo">🔥 OFFRE SÉRIE FONDATRICE : -17 % 🔥</div>
+    <div class="promo">🔥 SÉRIE FONDATRICE · ÉDITION LIMITÉE 🔥</div>
     <div class="pdpshot media"></div>
     <div class="prail">
       <div class="pr"><div class="ic"><svg><use href="#i-heart"/></svg></div><span>Pensé pour ton cycle</span></div>
@@ -329,13 +329,11 @@
       <li><svg><use href="#i-check"/></svg>Gattilier — la plante la mieux documentée sur le cycle</li>
     </ul>
     <div class="offers">
-      <div class="off best"><div class="top">LE PLUS POPULAIRE · -17 %</div>
-        <div class="row"><div class="nm">Abonnement<small>28 licornes · toutes les 4 semaines</small></div>
-          <div class="pz"><b>49 €</b><s>59 €</s><small>1,75 €/jour</small></div></div>
-        <ul class="offperks"><li>Satisfait ou remboursé 30 jours</li><li>Livraison offerte aujourd'hui</li><li>Résiliable à tout moment</li><li>Avantage fondatrice réservé</li></ul>
+      <div class="off best"><div class="top">SÉRIE FONDATRICE · ÉDITION LIMITÉE</div>
+        <div class="row"><div class="nm">Commande unique<small>28 licornes · une seule fois</small></div>
+          <div class="pz"><b>59 €</b><small>2,11 €/jour</small></div></div>
+        <ul class="offperks"><li>Satisfait ou remboursé 30 jours</li><li>Livraison offerte aujourd'hui</li><li>Paiement unique, sans engagement</li><li>Avantage fondatrice réservé</li></ul>
       </div>
-      <div class="off"><div class="row"><div class="nm">Commande unique<small>28 licornes · une seule fois</small></div>
-        <div class="pz"><b>59 €</b><small>2,11 €/jour</small></div></div></div>
     </div>
     <button class="btn lg block" onclick="mzPreorder('pdp')">Pré-commander</button>
     <div class="pre">Pré-commande série fondatrice · expédition à la première production · remboursée si non livrée</div>
@@ -425,7 +423,7 @@
 <script>
   // ===== Pré-commande : event PostHog (+ redirection Stripe quand prêt) =====
   // Quand tu auras ton Stripe Payment Link, colle-le ici et le bouton redirigera vers le paiement.
-  var MZ_CHECKOUT_URL = ""; // ex : "https://buy.stripe.com/xxxxxxxxxxxx"
+  var MZ_CHECKOUT_URL = "https://buy.stripe.com/eVqaEWa4y1yWc9d4Rm5ZC05"; // Stripe Payment Link (paiement unique)
   function mzPreorder(loc){
     try { if (window.posthog) posthog.capture('preorder_click', { location: loc, plan: 'fondatrice' }); } catch(e) {}
     if (MZ_CHECKOUT_URL) { window.location.href = MZ_CHECKOUT_URL; }
