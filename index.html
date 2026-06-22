@@ -84,7 +84,8 @@ h1,h2,.brand,.bignum{font-family:'Baloo 2',system-ui,sans-serif;line-height:1.08
 .form{max-width:400px;margin:0 auto}
 .form-row{display:flex;flex-direction:column;gap:10px}
 
-.form input[type=email]{
+.form input[type=email],
+.form input[type=text]{
   width:100%;
   font-family:'Hanken Grotesk',sans-serif;
   font-size:1.05rem;font-weight:500;
@@ -94,8 +95,9 @@ h1,h2,.brand,.bignum{font-family:'Baloo 2',system-ui,sans-serif;line-height:1.08
   background:#fff;color:var(--ink);
   transition:border-color .15s ease;
 }
-.form input[type=email]::placeholder{color:#b98aa6}
-.form input[type=email]:focus{outline:none;border-color:var(--rose)}
+.form input::placeholder{color:#b98aa6}
+.form input[type=email]:focus,
+.form input[type=text]:focus{outline:none;border-color:var(--rose)}
 
 .btn{
   width:100%;
@@ -226,6 +228,7 @@ footer a{color:var(--rose-ink);text-decoration:none}
     <!-- FORM -->
     <div class="form" id="formBox">
       <div class="form-row">
+        <input type="text" id="firstname" placeholder="ton prénom" autocomplete="given-name">
         <input type="email" id="email" placeholder="ton adresse email" autocomplete="email" inputmode="email">
         <button class="btn" id="submitBtn">Je m'inscris</button>
       </div>
@@ -298,6 +301,7 @@ posthog.init('phc_AsWmEBJ5BBnqhGNDJMmLVzmoTSczeD69mWeC4rJrQoWv',{api_host:'https
 // ---- Form handling ----
 (function(){
   var email = document.getElementById('email');
+  var firstname = document.getElementById('firstname');
   var formBox = document.getElementById('formBox');
   var successBox = document.getElementById('successBox');
   var btn = document.getElementById('submitBtn');
@@ -331,8 +335,10 @@ posthog.init('phc_AsWmEBJ5BBnqhGNDJMmLVzmoTSczeD69mWeC4rJrQoWv',{api_host:'https
     btn.disabled = true;
     btn.textContent = '...';
 
+    var fn = firstname.value.trim();
+
     // PostHog event
-    try{ posthog.capture('newsletter_signup', {source:'landing', email_domain: v.split('@')[1]}); posthog.identify(v); }catch(e){}
+    try{ posthog.capture('newsletter_signup', {source:'landing', email_domain: v.split('@')[1]}); posthog.identify(v, {first_name: fn}); }catch(e){}
 
     if(!SUPABASE_URL || !SUPABASE_ANON){
       // Pas encore branché : on simule le succès pour le visuel
@@ -347,7 +353,7 @@ posthog.init('phc_AsWmEBJ5BBnqhGNDJMmLVzmoTSczeD69mWeC4rJrQoWv',{api_host:'https
         'Content-Type': 'application/json',
         'Prefer': 'return=minimal'
       },
-      body: JSON.stringify({ email: v, source: 'landing' })
+      body: JSON.stringify({ email: v, first_name: fn, source: 'landing' })
     }).then(function(res){
       // 201 = inséré, 409 = déjà inscrite → dans les deux cas, succès pour elle
       if(res.ok || res.status === 409){ done(); }
