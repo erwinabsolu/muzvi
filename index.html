@@ -345,7 +345,7 @@ posthog.init('phc_AsWmEBJ5BBnqhGNDJMmLVzmoTSczeD69mWeC4rJrQoWv',{api_host:'https
       headers:{
         'apikey': SUPABASE_ANON,
         'Content-Type': 'application/json',
-        'Prefer': 'return=minimal,resolution=ignore-duplicates'
+        'Prefer': 'return=minimal'
       },
       body: JSON.stringify({ email: v, source: 'landing' })
     }).then(function(res){
