@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>les vi — t'es pas faible, c'est ta semaine</title>
+<title>les Muz — t'es pas faible, c'est ta semaine</title>
 <meta name="description" content="La newsletter pour la femme en perte de poids dont le SPM fait tout dérailler. Tous les mardis, 5 minutes.">
 
 <!-- Open Graph -->
-<meta property="og:title" content="les vi — t'es pas faible, c'est ta semaine">
+<meta property="og:title" content="les Muz — t'es pas faible, c'est ta semaine">
 <meta property="og:description" content="La newsletter pour la femme en perte de poids dont le SPM fait tout dérailler. Tous les mardis, 5 minutes.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.muzvi.com">
@@ -355,9 +355,19 @@ posthog.init('phc_AsWmEBJ5BBnqhGNDJMmLVzmoTSczeD69mWeC4rJrQoWv',{api_host:'https
       },
       body: JSON.stringify({ email: v, first_name: fn, source: 'landing' })
     }).then(function(res){
-      // 201 = inséré, 409 = déjà inscrite → dans les deux cas, succès pour elle
-      if(res.ok || res.status === 409){ done(); }
-      else { throw new Error('status ' + res.status); }
+      if(res.ok){
+        // nouvelle inscrite → déclenche le mail de bienvenue (sans bloquer l'UX)
+        fetch(SUPABASE_URL + '/functions/v1/welcome-email', {
+          method:'POST',
+          headers:{ 'apikey': SUPABASE_ANON, 'Content-Type':'application/json' },
+          body: JSON.stringify({ email: v, first_name: fn })
+        }).catch(function(){});
+        done();
+      } else if(res.status === 409){
+        done(); // déjà inscrite : pas de second mail de bienvenue
+      } else {
+        throw new Error('status ' + res.status);
+      }
     }).catch(function(){
       btn.disabled = false;
       btn.textContent = 'Je m\'inscris';
